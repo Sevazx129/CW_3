@@ -1,26 +1,26 @@
 import datetime
 
-def new_dict_format_data(file):
+def new_dict_format_data(str):
     """функция преобразует дату из строкового формата в класс date"""
-    for item in file:
-        item['date'] = datetime.date.fromisoformat((item['date'])[:10])
+    if 'T' in str:
+        new_list = str.split('T')
+        new_list.pop(-1)
+        new_str = ''.join(new_list)
+        return datetime.date.fromisoformat(new_str)
+    else:
+        return datetime.date.fromisoformat(str)
 
 def sorted_dict(dict):
     """функция сортирует список словарей по убыванию даты"""
     return sorted(dict, key=lambda x: x['date'], reverse=True)
 
 
-def format_str(from_to, i=0):
-    """функция форматирует вывод по заданным условиям"""
-    if 'from' in from_to[i].keys():
-        new_from = from_to[i]['from'].split(' ')
-        new_from[-1] = f"{new_from[-1][:4]} {new_from[-1][6:8]}" \
-                       f"** ****{new_from[-1][-4:]}"
+def mask_for_str_with_from(str) -> str:
+    new_list = str.split(' ')
+    new_list[-1] = f"{new_list[-1][:4]} {new_list[-1][4:6]}** **** {new_list[-1][-4:]}"
+    return ' '.join(new_list)
 
-        new_to = f"**{from_to[i]['to'][-4:]}"
-
-        print(f"{' '.join(new_from)}-> {new_to}")
-
-    elif 'from' not in from_to[i].keys():
-        new_to = f"**{from_to[i]['to'][-4:]}"
-        print(f"-> {new_to}")
+def mask_for_str_with_to(str) -> str:
+    new_list = str.split(' ')
+    new_list[-1] = f"**{new_list[-1][-4:]}"
+    return ' '.join(new_list)
